@@ -1,0 +1,20 @@
+%% Mermaid: Data flow sequence (sanitized)
+sequenceDiagram
+  autonumber
+  participant EDR as EDR (Mock)
+  participant NDR as NDR (Mock)
+  participant P as Pipeline
+  participant AI as AI Enricher
+  participant DB as Event Store
+  participant UI as Dashboard
+  participant SOC as SOC Analyst
+
+  EDR->>P: Push alert (JSON)
+  NDR->>P: Push alert (JSON)
+  P->>P: Normalize to common schema
+  P->>P: Correlate by device_id/hostname/ip/time
+  P->>AI: Request MITRE, risk, recommendation
+  AI-->>P: Enriched fields (tactics, techniques, score, recs)
+  P->>DB: Persist enriched clusters
+  DB-->>UI: Incidents, correlation, timeline, MITRE
+  UI-->>SOC: Review & action
