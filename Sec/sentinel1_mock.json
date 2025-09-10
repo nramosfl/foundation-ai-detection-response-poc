@@ -1,0 +1,30 @@
+[
+  {
+    "alert_id": "S1-EDR-001",
+    "timestamp": "2025-09-10T13:22:41Z",
+    "device_id": "WIN-12345",
+    "hostname": "retail-laptop-07",
+    "user": "jane.doe",
+    "ip": "10.15.33.21",
+    "event_type": "malware_detected",
+    "file_path": "C:\\Users\\jane.doe\\AppData\\Roaming\\updater.exe",
+    "sha256": "8f9d0a...mockhash",
+    "threat_name": "Trojan.Generic",
+    "mitre_techniques": ["T1059", "T1204"],
+    "severity": "High"
+  },
+  {
+    "alert_id": "S1-EDR-002",
+    "timestamp": "2025-09-10T14:08:02Z",
+    "device_id": "WIN-67890",
+    "hostname": "retail-pos-12",
+    "user": "svc_pos",
+    "ip": "10.15.33.89",
+    "event_type": "ransomware_activity",
+    "file_path": "C:\\POS\\billing.exe",
+    "sha256": "abcd1234...mockhash",
+    "threat_name": "Ransom.Win32.MockLocker",
+    "mitre_techniques": ["T1486", "T1059.003"],
+    "severity": "Critical"
+  }
+]
