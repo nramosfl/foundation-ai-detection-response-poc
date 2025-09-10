@@ -1,0 +1,120 @@
+[
+  {
+    "cluster_id": "CL-2025-0910-001",
+    "correlation_keys": {
+      "device_id": "WIN-12345",
+      "hostname": "retail-laptop-07",
+      "ip": "10.15.33.21"
+    },
+    "timeline": [
+      {
+        "source": "SentinelOne",
+        "alert_id": "S1-EDR-001",
+        "timestamp": "2025-09-10T13:22:41Z",
+        "event_type": "malware_detected",
+        "details": {
+          "file_path": "C:\\\\Users\\\\jane.doe\\\\AppData\\\\Roaming\\\\updater.exe",
+          "sha256": "8f9d0a...mockhash",
+          "threat_name": "Trojan.Generic",
+          "severity": "High",
+          "mitre_techniques": ["T1059", "T1204"]
+        }
+      },
+      {
+        "source": "Vectra",
+        "alert_id": "VEC-NDR-101",
+        "timestamp": "2025-09-10T13:24:15Z",
+        "event_type": "command_and_control",
+        "details": {
+          "detected_protocol": "DNS",
+          "destination_domain": "c2.mockbadguy.com",
+          "confidence": 0.92,
+          "severity": "High",
+          "mitre_techniques": ["T1071.004"]
+        }
+      }
+    ],
+    "deduped_indicators": {
+      "ips": ["10.15.33.21"],
+      "domains": ["c2.mockbadguy.com"],
+      "hashes": ["8f9d0a...mockhash"],
+      "users": ["jane.doe"]
+    },
+    "ai_enrichment": {
+      "mitre_tactic": ["Execution", "Command and Control"],
+      "mitre_technique_ids": ["T1059", "T1204", "T1071.004"],
+      "risk_score": 82,
+      "confidence_band": "High",
+      "recommendation": "Isolate the host WIN-12345, block DNS to c2.mockbadguy.com, and quarantine updater.exe. Collect triage artifacts (DNS cache, autoruns, persistence keys) and rotate credentials for jane.doe."
+    },
+    "scoring_rationale": [
+      "High-severity EDR detection with malicious binary execution.",
+      "NDR confirms possible C2 over DNS to suspicious domain.",
+      "Short time delta between execution and outbound traffic.",
+      "Single affected endpoint; no lateral movement observed yet."
+    ],
+    "status": "Needs Triage",
+    "owner": "SOC-Tier1",
+    "created_at": "2025-09-10T13:25:05Z",
+    "last_updated": "2025-09-10T13:26:50Z"
+  },
+  {
+    "cluster_id": "CL-2025-0910-002",
+    "correlation_keys": {
+      "device_id": "WIN-67890",
+      "hostname": "retail-pos-12",
+      "ip": "10.15.33.89"
+    },
+    "timeline": [
+      {
+        "source": "SentinelOne",
+        "alert_id": "S1-EDR-002",
+        "timestamp": "2025-09-10T14:08:02Z",
+        "event_type": "ransomware_activity",
+        "details": {
+          "file_path": "C:\\\\POS\\\\billing.exe",
+          "sha256": "abcd1234...mockhash",
+          "threat_name": "Ransom.Win32.MockLocker",
+          "severity": "Critical",
+          "mitre_techniques": ["T1486", "T1059.003"]
+        }
+      },
+      {
+        "source": "Vectra",
+        "alert_id": "VEC-NDR-102",
+        "timestamp": "2025-09-10T14:10:45Z",
+        "event_type": "lateral_movement",
+        "details": {
+          "detected_protocol": "SMB",
+          "destination_ip": "10.15.34.200",
+          "confidence": 0.95,
+          "severity": "Critical",
+          "mitre_techniques": ["T1021.002"]
+        }
+      }
+    ],
+    "deduped_indicators": {
+      "ips": ["10.15.33.89", "10.15.34.200"],
+      "domains": [],
+      "hashes": ["abcd1234...mockhash"],
+      "users": ["svc_pos"]
+    },
+    "ai_enrichment": {
+      "mitre_tactic": ["Impact", "Execution", "Lateral Movement"],
+      "mitre_technique_ids": ["T1486", "T1059.003", "T1021.002"],
+      "risk_score": 94,
+      "confidence_band": "High",
+      "recommendation": "Immediately isolate retail-pos-12 and any SMB-connected hosts, disable SMB to 10.15.34.200, block known ransomware IOCs, snapshot impacted systems, and initiate ransomware IR playbook (restore from backups, rotate service credentials)."
+    },
+    "scoring_rationale": [
+      "Confirmed ransomware behavior on a POS endpoint (critical asset).",
+      "Concurrent NDR evidence of SMB-based lateral movement.",
+      "Service account involved (svc_pos) increases blast radius risk.",
+      "High confidence across multiple tools; rapid escalation recommended."
+    ],
+    "status": "Escalate — P1",
+    "owner": "IR-OnCall",
+    "created_at": "2025-09-10T14:11:30Z",
+    "last_updated": "2025-09-10T14:12:10Z"
+  }
+]
