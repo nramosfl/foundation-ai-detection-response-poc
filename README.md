@@ -39,7 +39,7 @@ All data, logs, and outputs are mock or simulated. No proprietary or company-spe
 ---
 
 ##  Tech Stack
-- Python 3**  
+- Python 3  
 - Cisco Foundation AI (open model)  
 - MITRE ATT&CK Framework  
 - Replit / Web dashboard for demo 
