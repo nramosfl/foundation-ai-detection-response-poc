@@ -1,0 +1,12 @@
+%% Mermaid: Dashboard tabs & data (sanitized)
+flowchart LR
+  STORE[(Event Store)] --> INC[Incidents]
+  STORE --> CORR[Correlation View]
+  STORE --> MITRE[MITRE Coverage]
+  STORE --> TL[Timeline]
+
+  INC -->|open| CORR
+  INC -->|open| TL
+  CORR -->|select node| TL
+  TL -->|jump to| INC
+  MITRE -->|filter by tactic| INC
