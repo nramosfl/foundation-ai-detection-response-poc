@@ -1,0 +1,17 @@
+%% Mermaid: Correlation logic (sanitized)
+flowchart TD
+  A[Start] --> B[Load normalized events]
+  B --> C{Group by keys?}
+  C -->|device_id| D[Candidate cluster A]
+  C -->|hostname| E[Candidate cluster B]
+  C -->|ip| F[Candidate cluster C]
+  D --> G{Within time window?}
+  E --> G
+  F --> G
+  G -->|No| H[Discard candidates]
+  G -->|Yes| I[Merge into cluster]
+  I --> J[Deduplicate indicators (IPs, hashes, users)]
+  J --> K[Attach scoring context]
+  K --> L[Send for AI enrichment]
+  L --> M[Persist cluster]
+  M --> N[End]
