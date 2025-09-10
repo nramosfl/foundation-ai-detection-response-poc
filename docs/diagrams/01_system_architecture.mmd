@@ -1,0 +1,30 @@
+%% Mermaid: High-level architecture (sanitized)
+flowchart LR
+  subgraph Sources[Telemetry Sources (Mock)]
+    EDR[EDR Alerts (sentinel1_mock.json)]
+    NDR[NDR Alerts (vectra_mock.json)]
+    SaaS[SaaS Logs (optional)]
+  end
+
+  subgraph Pipeline[Detection Correlation & Enrichment Pipeline]
+    NORM[Normalizer<br/>Common Schema Mapper]
+    CORR[Correlation Engine<br/>(device_id, hostname, ip, time-window)]
+    ENRICH[AI Enrichment<br/>(MITRE tags, risk score, recs)]
+    STORE[(Event Store<br/>JSON/DB)]
+  end
+
+  subgraph Consumers[Consumers]
+    DASH[Demo Dashboard<br/>(Incidents • Correlation • MITRE • Timeline)]
+    SIEM[SIEM/SOAR (optional)]
+    ANALYST[SOC Analyst]
+  end
+
+  EDR --> NORM
+  NDR --> NORM
+  SaaS --> NORM
+
+  NORM --> CORR --> ENRICH --> STORE
+
+  STORE --> DASH
+  STORE --> SIEM
+  STORE --> ANALYST
