@@ -1,0 +1,42 @@
+%% Mermaid: Common schema (sanitized)
+classDiagram
+  class Event {
+    string source
+    string alert_id
+    datetime timestamp
+    string device_id
+    string hostname
+    string ip
+    string event_type
+    map details
+  }
+
+  class IndicatorSet {
+    string[] ips
+    string[] domains
+    string[] hashes
+    string[] users
+  }
+
+  class EnrichedFields {
+    string[] mitre_tactic
+    string[] mitre_technique_ids
+    int risk_score
+    string confidence_band
+    string recommendation
+  }
+
+  class Cluster {
+    string cluster_id
+    Event[] timeline
+    IndicatorSet deduped_indicators
+    EnrichedFields ai_enrichment
+    string status
+    string owner
+    datetime created_at
+    datetime last_updated
+  }
+
+  Event "1..*" --> "1" Cluster : forms timeline
+  Cluster "1" o-- "1" IndicatorSet
+  Cluster "1" o-- "1" EnrichedFields
